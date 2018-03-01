@@ -114,11 +114,11 @@ module Secretary
 
 
       def was_created?(object)
-        object.persisted? && object.id_changed?
+        object.persisted? && object.saved_change_to_id?
       end
 
       def was_updated?(object)
-        object.persisted? && !object.id_changed?
+        object.persisted? && !object.saved_change_to_id?
       end
     end
 
