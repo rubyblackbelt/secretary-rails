@@ -106,8 +106,8 @@ This also works on all other association types in the same way:
 Secretary provides Rails-style `dirty attributes` for associations.
 Given an association `has_many :pets`, the methods available are:
 
-* **pets_changed?**
-* **pets_were**
+* **secretary_will_change_pets**
+* **secretary_previous_pets**
 
 Secretary also merges in the association changes into the standard Rails
 `changes` hash:
@@ -117,9 +117,9 @@ person.pets.to_a # => []
 
 person.pets << Pet.new(name: "Spot")
 
-person.pets_changed? # => true
+person.secretary_will_change_pets # => true
 person.changed?      # => true
-person.pets_were     # => []
+person.secretary_previous_pets     # => []
 person.changes       # => { "pets" => [[], [{ "name" => "Spot" }]]}
 ```
 

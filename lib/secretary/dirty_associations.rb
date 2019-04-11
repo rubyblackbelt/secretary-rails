@@ -6,9 +6,6 @@ module Secretary
     autoload :Collection
     autoload :Singular
 
-    COLLECTION_SUFFIX   = "_were"
-    SINGULAR_SUFFIX     = "_was"
-
 
     module ClassMethods
       # Backport of rails/rails#5383f22bb83adbd0e2e3f182f68196f1fb1433fa
@@ -29,26 +26,15 @@ module Secretary
       private
 
       def define_dirty_association_methods(name, reflection)
-        suffix = reflection.collection? ? COLLECTION_SUFFIX : SINGULAR_SUFFIX
-
         module_eval <<-EOE, __FILE__, __LINE__ + 1
-          def #{name}_changed?
-            !!attribute_changed?("#{name}")
-          end
-
-          def #{name}#{suffix}
-            attribute_was("#{name}")
-          end
-
-          def #{name}_change
-            attribute_change("#{name}")
-          end
+          attr_accessor "secretary_previous_#{name}"
+          attr_accessor "secretary_will_change_#{name}"
 
 
           private
 
           def #{name}_will_change!
-            return if #{name}_changed?
+            # return if self.send("secretary_will_change_#{name}")
 
             # If this is a persisted object, fetch the object from the
             # database and get its associated objects. Otherwise, just
@@ -120,16 +106,9 @@ module Secretary
       end
     end
 
-    # Rails 4.2 adds "set_attribute_was" which must be used, so we'll
-    # check for it.
     def __compat_set_attribute_was(name, previous)
-      if respond_to?(:set_attribute_was, true)
-        # Rails 4.2+
-        set_attribute_was(name, previous)
-      else
-        # Rails < 4.2
-        changed_attributes[name] = previous
-      end
+      self.send("secretary_previous_#{name}=", previous)
+      self.send("secretary_will_change_#{name}=", true)
     end
 
     def __compat_clear_attribute_changes(name)

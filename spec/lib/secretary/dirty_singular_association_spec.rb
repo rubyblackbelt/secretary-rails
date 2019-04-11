@@ -5,23 +5,23 @@ describe "Dirty Singular Association" do
     let(:story) { create :story }
     let(:image) { create :image, :title => "Superman", :url => "superman.jpg" }
 
-    it 'sets association_was' do
+    it 'sets secretary_previous' do
       story.image = image
-      expect(story.image_was).to eq nil
+      expect(story.secretary_previous_image).to eq nil
       story.save!
-      expect(story.image_was).to eq image
+      expect(story.secretary_previous_image).to eq image
     end
 
     it 'marks the association as changed when the association is changed' do
       story.image = image
-      expect(story.image_changed?).to eq true
+      expect(story.secretary_will_change_image).to eq true
     end
 
     it 'clears out the dirty association after commit' do
       story.image = image
-      expect(story.image_changed?).to eq true
+      expect(story.secretary_will_change_image).to eq true
       story.save!
-      expect(story.image_changed?).to eq false
+      expect(story.secretary_will_change_image).to eq nil
     end
 
     it "creates a new version when setting the association" do
@@ -144,30 +144,30 @@ describe "Dirty Singular Association" do
       end
     end
 
-    describe '#association_changed?' do
+    describe '#secretary_will_change_association' do
       it 'is true if the association has changed' do
-        expect(story.image_changed?).to eq false
+        expect(story.secretary_will_change_image).to eq nil
         story.image = image
-        expect(story.image_changed?).to eq true
+        expect(story.secretary_will_change_image).to eq true
       end
 
       it 'is false after the parent object has been saved' do
         story.image = image
-        expect(story.image_changed?).to eq true
+        expect(story.secretary_will_change_image).to eq true
         story.save!
-        expect(story.image_changed?).to eq false
+        expect(story.secretary_will_change_image).to eq nil
       end
 
       it 'is false if the association has not changed' do
-        pending "association_changed? is always considered changed when assigning"
+        pending "secretary_will_change_association is always considered changed when assigning"
 
         story.image = image
-        expect(story.image_changed?).to eq true
+        expect(story.secretary_will_change_image).to eq true
         story.save!
-        expect(story.image_changed?).to eq false
+        expect(story.secretary_will_change_image).to eq nil
 
         story.image = image
-        expect(story.image_changed?).to eq false
+        expect(story.secretary_will_change_image).to eq nil
       end
     end
   end
@@ -178,23 +178,23 @@ describe "Dirty Singular Association" do
     let(:story) { create :story, :headline => "Headline", :body => "Body" }
     let(:image) { create :image, :title => "Superman", :url => "superman.jpg" }
 
-    it 'sets association_was' do
+    it 'sets secretary_previous' do
       image.story = story
-      expect(image.story_was).to eq nil
+      expect(image.secretary_previous_story).to eq nil
       image.save!
-      expect(image.story_was).to eq story
+      expect(image.secretary_previous_story).to eq story
     end
 
     it 'marks the association as changed when the association is changed' do
       image.story = story
-      expect(image.story_changed?).to eq true
+      expect(image.secretary_will_change_story).to eq true
     end
 
     it 'clears out the dirty association after commit' do
       image.story = story
-      expect(image.story_changed?).to eq true
+      expect(image.secretary_will_change_story).to eq true
       image.save!
-      expect(image.story_changed?).to eq false
+      expect(image.secretary_will_change_story).to eq nil
     end
 
     it "creates a new version when setting the association" do
@@ -239,40 +239,40 @@ describe "Dirty Singular Association" do
       expect(versions.last.object_changes["story"][1]).to eq Hash[]
     end
 
-    describe '#association_changed?' do
+    describe '#secretary_will_change_association' do
       it 'is true if the association has changed' do
-        expect(image.story_changed?).to eq false
+        expect(image.secretary_will_change_story).to eq nil
         image.story = story
-        expect(image.story_changed?).to eq true
+        expect(image.secretary_will_change_story).to eq true
       end
 
       it 'is false after the parent object has been saved' do
         image.story = story
-        expect(image.story_changed?).to eq true
+        expect(image.secretary_will_change_story).to eq true
         image.save!
-        expect(image.story_changed?).to eq false
+        expect(image.secretary_will_change_story).to eq nil
       end
 
       it 'is false if the association has not changed' do
-        pending "association_changed? is always considered changed when assigning"
+        pending "secretary_will_change_association is always considered changed when assigning"
 
         image.story = story
-        expect(image.story_changed?).to eq true
+        expect(image.secretary_will_change_story).to eq true
         image.save!
-        expect(image.story_changed?).to eq false
+        expect(image.secretary_will_change_story).to eq nil
 
         image.story = story
-        expect(image.story_changed?).to eq false
+        expect(image.secretary_will_change_story).to eq nil
       end
 
       it 'is true when switching to or from nil' do
         # image.story is nil
         image.story = story
-        expect(image.story_changed?).to eq true
+        expect(image.secretary_will_change_story).to eq true
         image.save!
 
         image.story = nil
-        expect(image.story_changed?).to eq true
+        expect(image.secretary_will_change_story).to eq true
       end
     end
   end

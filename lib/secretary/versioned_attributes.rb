@@ -77,7 +77,7 @@ module Secretary
     # human-readable objects.
     def versioned_changes
       modified_changes = {}
-      raw_changes = self.changes.select {|k,_| versioned_attribute?(k)}.to_hash
+      raw_changes = __raw_changes.select {|k,_| versioned_attribute?(k)}.to_hash
 
       raw_changes.each do |key, (previous, current)|
         if reflection = self.class.reflect_on_association(key.to_sym)
@@ -140,6 +140,29 @@ module Secretary
 
     def reset_versioned_changes
       @__versioned_changes = nil
+
+      association_attributes.each do |name|
+        self.send("secretary_previous_#{name}=", self.send(name))
+        self.send("secretary_will_change_#{name}=", nil)
+      end
+    end
+
+    def association_attributes
+      self.class.versioned_attributes - self.class.column_names
+    end
+
+    def __saved_association_changes
+      association_attributes.select do |a|
+        self.send("secretary_will_change_#{a}")
+      end.map do |a|
+        {
+          "#{a}" => [self.send("secretary_previous_#{a}"), self.send(a)]
+        }
+      end.reduce(&:merge).to_h
+    end
+
+    def __raw_changes
+      self.saved_changes.merge(__saved_association_changes)
     end
   end
 end

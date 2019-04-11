@@ -54,15 +54,16 @@ describe Secretary::VersionedAttributes do
 
 
   describe '#versioned_changes' do
-    let(:person) { create :person }
+    let!(:person) { create :person }
 
     it 'is empty for non-dirty objects' do
-      expect(person.versioned_changes).to eq Hash[]
+      expect(person.reload.versioned_changes).to eq Hash[]
     end
 
     it "return a hash of changes for just the attributes we want" do
       person.age  = 120
       person.name = "Freddie"
+      person.save
 
       expect(person.versioned_changes).to eq Hash[{
         "age" => [100, 120]
