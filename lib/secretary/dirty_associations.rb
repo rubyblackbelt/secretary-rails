@@ -34,7 +34,7 @@ module Secretary
           private
 
           def #{name}_will_change!
-            # return if self.send("secretary_will_change_#{name}")
+            return if self.send("secretary_will_change_#{name}")
 
             # If this is a persisted object, fetch the object from the
             # database and get its associated objects. Otherwise, just
