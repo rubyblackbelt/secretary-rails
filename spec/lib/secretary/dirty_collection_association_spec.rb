@@ -5,21 +5,21 @@ describe "Dirty Collection Association" do
     let(:person) { create :person }
     let(:animal) { create :animal, :name => "Bob", :color => "dog" }
 
-    it 'sets associations_were' do
+    it 'sets secretary_previous_association' do
       person.animals << animal
-      expect(person.animals_were).to eq []
+      expect(person.secretary_previous_animals).to eq []
     end
 
     it 'marks the association as changed when the association is changed' do
       person.animals << animal
-      expect(person.animals_changed?).to eq true
+      expect(person.secretary_will_change_animals).to eq true
     end
 
     it 'clears out the dirty association after commit' do
       person.animals << animal
-      expect(person.animals_changed?).to eq true
+      expect(person.secretary_will_change_animals).to eq true
       person.save!
-      expect(person.animals_changed?).to eq false
+      expect(person.secretary_will_change_animals).to eq nil
     end
 
     it "creates a new version when adding" do
@@ -81,7 +81,7 @@ describe "Dirty Collection Association" do
         ]
 
         person.animals_attributes = animals_attributes
-        expect(person.animals_were).to eq []
+        expect(person.secretary_previous_animals).to eq []
         person.save!
         expect(person.versions.count).to eq 2
 
@@ -160,28 +160,28 @@ describe "Dirty Collection Association" do
       end
     end
 
-    describe '#association_changed?' do
+    describe '#secretary_will_change_association' do
       it 'is true if the association has changed' do
-        expect(person.animals_changed?).to eq false
+        expect(person.secretary_will_change_animals).to eq nil
         person.animals << animal
-        expect(person.animals_changed?).to eq true
+        expect(person.secretary_will_change_animals).to eq true
       end
 
       it 'is false after the parent object has been saved' do
         person.animals << animal
-        expect(person.animals_changed?).to eq true
+        expect(person.secretary_will_change_animals).to eq true
         person.save!
-        expect(person.animals_changed?).to eq false
+        expect(person.secretary_will_change_animals).to eq nil
       end
 
       it 'is false if the association has not changed' do
         person.animals << animal
-        expect(person.animals_changed?).to eq true
+        expect(person.secretary_will_change_animals).to eq true
         person.save!
-        expect(person.animals_changed?).to eq false
+        expect(person.secretary_will_change_animals).to eq nil
 
         person.animals = [animal]
-        expect(person.animals_changed?).to eq false
+        expect(person.secretary_will_change_animals).to eq nil
       end
     end
   end
@@ -193,21 +193,21 @@ describe "Dirty Collection Association" do
       create :location, :title => "Home", :address => "123 Fake St."
     }
 
-    it 'sets associations_were' do
+    it 'sets secretary_previous_association' do
       car.locations << location
-      expect(car.locations_were).to eq []
+      expect(car.secretary_previous_locations).to eq []
     end
 
     it 'marks the association as changed when the association is changed' do
       car.locations << location
-      expect(car.locations_changed?).to eq true
+      expect(car.secretary_will_change_locations).to eq true
     end
 
     it 'clears out the dirty association after commit' do
       car.locations << location
-      expect(car.locations_changed?).to eq true
+      expect(car.secretary_will_change_locations).to eq true
       car.save!
-      expect(car.locations_changed?).to eq false
+      expect(car.secretary_will_change_locations).to eq nil
     end
 
     it "creates a new version when adding" do
@@ -264,7 +264,7 @@ describe "Dirty Collection Association" do
         ]
 
         car.locations_attributes = locations_attributes
-        expect(car.locations_were).to eq []
+        expect(car.secretary_previous_locations).to eq []
         car.save!
         expect(car.versions.count).to eq 2
 
@@ -343,28 +343,28 @@ describe "Dirty Collection Association" do
       end
     end
 
-    describe '#association_changed?' do
+    describe '#secretary_will_change_association' do
       it 'is true if the association has changed' do
-        expect(car.locations_changed?).to eq false
+        expect(car.secretary_will_change_locations).to eq nil
         car.locations << location
-        expect(car.locations_changed?).to eq true
+        expect(car.secretary_will_change_locations).to eq true
       end
 
       it 'is false after the parent object has been saved' do
         car.locations << location
-        expect(car.locations_changed?).to eq true
+        expect(car.secretary_will_change_locations).to eq true
         car.save!
-        expect(car.locations_changed?).to eq false
+        expect(car.secretary_will_change_locations).to eq nil
       end
 
       it 'is false if the association has not changed' do
         car.locations << location
-        expect(car.locations_changed?).to eq true
+        expect(car.secretary_will_change_locations).to eq true
         car.save!
-        expect(car.locations_changed?).to eq false
+        expect(car.secretary_will_change_locations).to eq nil
 
         car.locations = [location]
-        expect(car.locations_changed?).to eq false
+        expect(car.secretary_will_change_locations).to eq nil
       end
     end
   end
@@ -390,21 +390,21 @@ describe "Dirty Collection Association" do
       expect(version.object_changes["story_users"][1][0]["user_id"]).to eq user.id
     end
 
-    it 'sets associations_were' do
+    it 'sets secretary_previous_association' do
       story.users << user
-      expect(story.users_were).to eq []
+      expect(story.secretary_previous_users).to eq []
     end
 
     it 'marks the association as changed when the association is changed' do
       story.users << user
-      expect(story.users_changed?).to eq true
+      expect(story.secretary_will_change_users).to eq true
     end
 
     it 'clears out the dirty association after commit' do
       story.users << user
-      expect(story.users_changed?).to eq true
+      expect(story.secretary_will_change_users).to eq true
       story.save!
-      expect(story.users_changed?).to eq false
+      expect(story.secretary_will_change_users).to eq nil
     end
 
     it "creates a new version when adding" do
@@ -458,7 +458,7 @@ describe "Dirty Collection Association" do
         ]
 
         story.users_attributes = users_attributes
-        expect(story.users_were).to eq []
+        expect(story.secretary_previous_users).to eq []
         story.save!
         expect(story.versions.count).to eq 2
 
@@ -533,28 +533,28 @@ describe "Dirty Collection Association" do
       end
     end
 
-    describe '#association_changed?' do
+    describe '#secretary_will_change_association' do
       it 'is true if the association has changed' do
-        expect(story.users_changed?).to eq false
+        expect(story.secretary_will_change_users).to eq nil
         story.users << user
-        expect(story.users_changed?).to eq true
+        expect(story.secretary_will_change_users).to eq true
       end
 
       it 'is false after the parent object has been saved' do
         story.users << user
-        expect(story.users_changed?).to eq true
+        expect(story.secretary_will_change_users).to eq true
         story.save!
-        expect(story.users_changed?).to eq false
+        expect(story.secretary_will_change_users).to eq nil
       end
 
       it 'is false if the association has not changed' do
         story.users << user
-        expect(story.users_changed?).to eq true
+        expect(story.secretary_will_change_users).to eq true
         story.save!
-        expect(story.users_changed?).to eq false
+        expect(story.secretary_will_change_users).to eq nil
 
         story.users = [user]
-        expect(story.users_changed?).to eq false
+        expect(story.secretary_will_change_users).to eq nil
       end
     end
   end

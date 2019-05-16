@@ -39,7 +39,7 @@ describe Secretary::Version do
         :url        => "http://kitty.com/kitty.jpg"
       })
 
-      expect(image.versions.last.description).to eq("Changed Story and Url")
+      expect(image.versions.last.description).to eq("Changed Url and Story")
     end
   end
 

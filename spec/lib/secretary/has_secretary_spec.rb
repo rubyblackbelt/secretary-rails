@@ -76,13 +76,5 @@ describe Secretary::HasSecretary do
       other_story.save!
       expect(other_story.versions.size).to eq 1
     end
-
-    it "destroys all versions when the object is destroyed" do
-      other_story.update_attributes!(:headline => "Changed the headline")
-      expect(other_story.versions.size).to eq 2
-      expect(Secretary::Version.count).to eq 2
-      other_story.destroy
-      expect(Secretary::Version.count).to eq 0
-    end
   end
 end

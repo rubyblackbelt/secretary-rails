@@ -32,7 +32,20 @@ module Secretary
     ##monkey patch
 
     def object_changes
-      version_object_change&.object_changes
+      begin
+        version_object_change&.object_changes
+      rescue => e
+        # workaround for Rails 5.1 deprecation of ActiveModel::Type::Text
+        if version_object_change_id.present?
+          sql = <<-SQL
+            update version_object_changes set object_changes = replace(object_changes, 'ActiveModel::Type::Text', 'ActiveRecord::Type::Text') where id = #{version_object_change_id};
+            SQL
+          VersionObjectChange.connection.execute(sql)
+          version_object_change.reload&.object_changes
+        else
+          {}
+        end
+      end
     end
 
     def object_changes=(oc)
@@ -114,11 +127,11 @@ module Secretary
 
 
       def was_created?(object)
-        object.persisted? && object.id_changed?
+        object.persisted? && object.saved_change_to_id?
       end
 
       def was_updated?(object)
-        object.persisted? && !object.id_changed?
+        object.persisted? && !object.saved_change_to_id?
       end
     end
 
