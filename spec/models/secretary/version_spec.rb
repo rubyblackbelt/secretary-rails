@@ -34,7 +34,7 @@ describe Secretary::Version do
       story.save!
       image = create :image
 
-      image.update_attributes({
+      image.update({
         :story_id   => story.id,
         :url        => "http://kitty.com/kitty.jpg"
       })
@@ -53,9 +53,9 @@ describe Secretary::Version do
     it "increments version number if versions already exist" do
       story = create :story, :headline => "Some Headline"
       expect(story.versions.last.version_number).to eq 1
-      story.update_attributes(:headline => "Cooler story, bro.")
+      story.update(:headline => "Cooler story, bro.")
       expect(story.versions.last.version_number).to eq 2
-      story.update_attributes(:headline => "Coolest story, bro!")
+      story.update(:headline => "Coolest story, bro!")
       expect(story.versions.last.version_number).to eq 3
     end
   end
@@ -64,7 +64,7 @@ describe Secretary::Version do
   describe '#attribute_diffs' do
     it 'is a hash of attribute keys, and Diffy::Diff objects' do
       story = create :story, :headline => "Cool story, bro"
-      story.update_attributes!(:headline => "Updated Headline")
+      story.update!(:headline => "Updated Headline")
 
       version = story.versions.last
       expect(version.attribute_diffs.keys).to eq ["headline"]

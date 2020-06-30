@@ -165,7 +165,7 @@ value is the `Diffy::Diff` object.
 article = Article.new(headline: "Old Headline", body: "Lorem ipsum...")
 article.save
 
-article.update_attributes(headline: "Updated Headline", body: "Updated Body")
+article.update(headline: "Updated Headline", body: "Updated Body")
 
 last_version = article.versions.last
 puts last_version.attribute_diffs
