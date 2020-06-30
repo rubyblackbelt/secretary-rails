@@ -10,12 +10,12 @@ TestSetup.setup
 $stdout.puts "*** [secretary] Database: #{TestSetup.database}"
 
 require 'rspec/rails'
-require 'factory_girl'
+require 'factory_bot'
 load 'factories.rb'
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
   config.mock_with :rspec
   config.order = "random"
   config.filter_run :focus => true
