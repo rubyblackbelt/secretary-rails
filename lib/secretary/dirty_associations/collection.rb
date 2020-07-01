@@ -17,7 +17,7 @@ module Secretary
           if ActiveRecord::VERSION::STRING >= "6.0.0"
             CALLBACKS.each do |cb|
               ActiveRecord::Associations::Builder::HasMany
-                .define_callbacks(self, reflection)
+                .send(:define_callback, self, cb, reflection.name, reflection.options)
             end
           elsif ActiveRecord::VERSION::STRING >= "4.1.0"
             CALLBACKS.each do |cb|
