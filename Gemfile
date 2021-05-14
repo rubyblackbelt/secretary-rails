@@ -12,7 +12,7 @@ group :test do
   gem "sqlite3"
   gem "mysql2"
   gem "pg"
-  gem 'rspec-rails', "~> 3.0"
+  gem 'rspec-rails', "~> 5.0.0"
   gem "factory_bot"
   gem "generator_spec", "~> 0.9.1"
 end
