@@ -1,9 +1,9 @@
 module Secretary
   class Version < ActiveRecord::Base
 
-    #monkey patch
-
     self.table_name = "secretary_versions"
+
+    #monkey patch
     acts_as_paranoid
 
     belongs_to :version_object_change, dependent: :destroy, inverse_of: :version

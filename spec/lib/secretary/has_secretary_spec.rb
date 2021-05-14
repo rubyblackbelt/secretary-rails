@@ -65,7 +65,7 @@ describe Secretary::HasSecretary do
     end
 
     it "generates a version when a record is changed" do
-      other_story.update_attributes(:headline => "Some Cool Headline?!")
+      other_story.update(:headline => "Some Cool Headline?!")
       expect(Secretary::Version.count).to eq 2
       expect(other_story.versions.size).to eq 2
     end

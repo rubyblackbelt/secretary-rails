@@ -376,7 +376,7 @@ describe "Dirty Collection Association" do
 
     it "can track the join model" do
       # Github #14
-      story = build :story
+      story = create :story
       user = build :user
 
       user.save!
