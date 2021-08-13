@@ -1,4 +1,4 @@
-class SecretaryCreateVersions < ActiveRecord::Migration
+class SecretaryCreateVersions < ActiveRecord::Migration[6.1]
   def change
     create_table "versions" do |t|
       t.integer  "version_number"
