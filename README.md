@@ -40,7 +40,11 @@ foreign keys to the object, and a foreign key to the user who saved the object.
 Add to your gemfile:
 
 ```ruby
-gem 'secretary-rails'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" } # if doesn't exist
+
+...
+
+gem 'secretary-rails', github: 'rubyblackbelt/secretary-rails'
 ```
 
 Run the install command, which will create a migration to add the `versions`
