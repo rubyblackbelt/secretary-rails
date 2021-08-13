@@ -8,6 +8,7 @@ class SecretaryCreateVersions < ActiveRecord::Migration[6.1]
       t.text     "description"
       t.text     "object_changes"
       t.datetime "created_at"
+      t.datetime "deleted_at"
     end
 
     add_index "versions", ["created_at"]
