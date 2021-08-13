@@ -1,7 +1,7 @@
 module Secretary
   class Version < ActiveRecord::Base
 
-    self.table_name = "secretary_versions"
+    self.table_name = Secretary.config.try(:table_name) || "versions"
 
     #monkey patch
     acts_as_paranoid
